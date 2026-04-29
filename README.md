@@ -1,13 +1,61 @@
 # ElectionEdu | Master the Indian Election Process
 
-A platform where you can learn and gain knowledge about Election Process Education
+A platform where you can learn and gain knowledge about the Indian Election Process in an interactive, accessible, and engaging way.
+
+## Description
+**ElectionEdu** is a comprehensive EdTech platform designed to demystify the world's largest democratic exercise—the Indian Elections. Aimed at first-time voters, students, and citizens seeking clarity on their civic duties, the platform breaks down complex procedures like voter registration, understanding EVMs/VVPATs, and the polling process into bite-sized, gamified, and conversational modules. By combining an AI-powered Chat Assistant, interactive flashcards, a step-by-step roadmap, and an engaging quiz system, ElectionEdu transforms passive learning into active civic engagement.
 
 ## Chosen Vertical
 **Education & Civic Engagement (EdTech)**
 Our mission is to educate citizens on the complex, multi-stage Indian Election Process, transforming civic duty into an accessible, engaging learning experience.
 
-## Overview
-ElectionEdu is an interactive platform built to simplify the world's largest democratic exercise. It integrates AI-powered assistance, gamified flashcards, and an interactive quiz to test knowledge. 
+## Architecture & Diagrams
+
+### 1. User Flow Diagram
+The following diagram illustrates how a user can navigate and interact with the various features of ElectionEdu:
+
+```mermaid
+graph TD
+    A[User visits ElectionEdu] --> B{Explore Options}
+    B --> C[Interact with AI Chat Assistant]
+    B --> D[Learn with Flashcards]
+    B --> E[Follow Step-by-Step Roadmap]
+    B --> F[Use Glossary & Forms Hub]
+    B --> G[Take Interactive Quiz]
+    
+    C -->|Queries| H[Google Vertex AI]
+    H -->|Instant Answers| I[Text-to-Speech Audio Options]
+    
+    D -->|Flip & Read| I
+    E -->|Track Progress| J[Personalized Checklist]
+    
+    G -->|Test Knowledge| K[Earn Points & See Results]
+```
+
+### 2. System Architecture
+The application follows a lightweight Single Page Application (SPA) architecture backed by a Node.js Express server acting as a bridge to Google Cloud Vertex AI.
+
+```mermaid
+graph LR
+    subgraph Frontend
+        Client(HTML / CSS / JS UI)
+        TTS(Web Speech API)
+    end
+    
+    subgraph Backend
+        Server(Node.js / Express Server)
+    end
+    
+    subgraph Google Cloud
+        AI(Vertex AI: gemini-1.5-flash)
+    end
+    
+    Client -->|HTTP POST /api/chat| Server
+    Server -->|SDK Call| AI
+    AI -->|Generated Response| Server
+    Server -->|JSON Data| Client
+    Client -.->|Triggers Audio| TTS
+```
 
 ## Approach & Logic
 The solution is built as a Single Page Application (SPA) with a multi-view architecture:
