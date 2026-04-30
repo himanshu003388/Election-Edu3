@@ -1,5 +1,10 @@
 # ElectionEdu 🇮🇳🗳️
 
+## 🔗 Live Demo & Repository
+
+- 🌐 **Live App (Cloud Run):** https://electionedu-255075469682.us-central1.run.app  
+- 💻 **GitHub Repository:** https://github.com/himanshu003388/Election-Edu3
+
 ElectionEdu is a comprehensive, AI-powered civic education platform designed to help Indian citizens understand the electoral process.
 
 ![ElectionEdu Banner](https://via.placeholder.com/1200x300.png?text=ElectionEdu+-+Empowering+Voters)
