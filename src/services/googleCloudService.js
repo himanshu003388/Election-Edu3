@@ -35,7 +35,13 @@ try {
     console.warn(err.message);
 }
 
-// Save chat to Firestore
+/**
+ * Saves a chat message to Firestore under a specific session.
+ * @param {string} sessionId - The unique session identifier
+ * @param {string} role - The role of the sender ('user' or 'model')
+ * @param {string} text - The message content
+ * @returns {Promise<void>}
+ */
 async function saveChatMessage(sessionId, role, text) {
     if (!googleServicesReady) return;
     try {
@@ -53,7 +59,11 @@ async function saveChatMessage(sessionId, role, text) {
     }
 }
 
-// Retrieve chat history for context
+/**
+ * Retrieves the last 10 messages of a chat session from Firestore for context.
+ * @param {string} sessionId - The unique session identifier
+ * @returns {Promise<Array<{role: string, parts: Array<{text: string}>}>>} Chat history formatted for Vertex AI
+ */
 async function getChatHistory(sessionId) {
     if (!googleServicesReady) return [];
     try {

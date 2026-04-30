@@ -1,26 +1,29 @@
 # ElectionEdu 🇮🇳🗳️
 
-ElectionEdu is a comprehensive, AI-powered civic education platform designed to help Indian citizens—especially first-time voters—understand the electoral process. 
-
-The platform simplifies complex democratic procedures into interactive, engaging, and accessible formats. Powered by **Google Cloud Vertex AI** and **Google Cloud AI APIs**, ElectionEdu acts as a personal guide to the world's largest democracy.
+ElectionEdu is a comprehensive, AI-powered civic education platform designed to help Indian citizens understand the electoral process.
 
 ![ElectionEdu Banner](https://via.placeholder.com/1200x300.png?text=ElectionEdu+-+Empowering+Voters)
 
 ---
 
-## ✨ Features
+## 🎯 Challenge Vertical & Persona
+- **Challenge Vertical:** Civic Education & Democratic Participation
+- **Target Persona:** First-Time Voters, Youth, and Citizens seeking clarity on the complex Indian electoral process.
 
-- **🤖 AI Election Assistant:** Ask any question about Indian elections, political parties, or voting processes and receive instant, factual answers powered by Google Vertex AI (Gemini).
-- **🌍 Multilingual Translation:** Break language barriers! Translate educational content instantly into 10+ Indian languages using the Google Cloud Translation API.
-- **📊 NLP Analysis:** Analyze political text or election news to extract key entities and sentiment using the Google Cloud Natural Language API.
-- **🗺️ Interactive Roadmap:** Step-by-step visual timeline guiding users from voter registration to election day.
-- **✅ Voting Checklist:** Persistent, offline-capable checklist to ensure users are fully prepared before heading to the polling booth.
-- **📚 Glossary & Flashcards:** Searchable database of complex election terminology and engaging flashcards for quick learning.
-- **📱 Responsive & Accessible:** Fully optimized for mobile devices with high-contrast UI, keyboard navigation, and semantic ARIA labeling.
+## ❓ Problem Statement
+The Indian electoral process, while highly robust, is often intimidating for first-time voters due to complex jargon, multiple steps (registration to voting), and a lack of consolidated, multilingual, and interactive guidance. ElectionEdu bridges this gap by providing an accessible, AI-driven educational portal that simplifies the journey from voter registration to casting a ballot.
+
+## 🧠 Assistant Logic Flow
+1. **User Request:** The user interacts with the Chat UI, asking a question (e.g., "What is a VVPAT?").
+2. **Sanitization & Rate Limiting:** The request passes through Express middlewares to strip malicious HTML and enforce rate limits.
+3. **Context Retrieval:** The backend fetches the last 10 messages from **Firestore** (using the `sessionId`) to maintain conversational context.
+4. **AI Generation:** The context and prompt are sent to **Google Cloud Vertex AI (Gemini 1.5 Flash)** with a strict system prompt limiting it to civic education topics.
+5. **Persistence:** The generated answer is saved back to Firestore.
+6. **Response:** The answer is rendered in the UI with an option for Text-to-Speech playback.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture Overview
 
 The application is built using a modern **Service-Controller-Router** backend architecture, integrated deeply with Google Cloud Services.
 
@@ -54,74 +57,83 @@ graph TD
     Controller <-->|"Entity/Sentiment Analysis"| NLP
 ```
 
-### Flow of the AI Chat Module:
-1. **User Request:** The client sends a message and a `sessionId`.
-2. **Context Retrieval:** The backend fetches the last 10 messages from **Firestore** for this session.
-3. **AI Generation:** The context and the new prompt are sent to **Vertex AI (Gemini 1.5 Flash)**.
-4. **Persistence:** The generated answer is saved back to Firestore to maintain context.
-5. **Response:** The answer is sent back to the user interface.
+## ☁️ Google Cloud Services Integration
+- **Vertex AI (`@google-cloud/vertexai`):** Powers the core conversational assistant (Gemini 1.5 Flash), providing instant, contextual answers.
+- **Translation API (`@google-cloud/translate`):** Breaks language barriers by translating facts and interface elements into multiple Indian languages.
+- **Natural Language API (`@google-cloud/language`):** Analyzes election-related text for entity extraction and sentiment analysis.
+- **Firestore (`@google-cloud/firestore`):** Provides highly scalable NoSQL storage for persisting chat histories and maintaining user sessions.
 
 ---
 
-## 🛠️ Technology Stack
-
-- **Frontend:** Vanilla HTML5, CSS3 (CSS Variables for Theming), Vanilla JavaScript.
-- **Backend:** Node.js, Express.js
-- **Google Cloud:**
-  - `@google-cloud/vertexai` (Gemini 1.5)
-  - `@google-cloud/translate`
-  - `@google-cloud/language` (NLP)
-  - `@google-cloud/firestore` (Session persistence)
-- **Security & Efficiency:** `helmet`, `express-rate-limit`, `node-cache`
-- **Testing:** Jest, Supertest (>80% Code Coverage)
+## 🧪 Testing & Coverage Summary
+Our test suite aims for 100% confidence.
+- **Framework:** Jest + Supertest.
+- **Unit Tests:** Covers `apiController`, `security` middleware, and `googleCloudService`. Extensively mocks GCP APIs to ensure tests run offline.
+- **Integration Tests:** Validates the `apiRoutes` for correct status codes, schema validation, and payload integrity.
+- **Edge Cases & Failure Paths:** We explicitly simulate Vertex AI timeouts, Firestore permission denials, offline modes, rate limiting triggers, and malformed payloads to ensure graceful degradation (e.g., falling back to Demo Mode).
 
 ---
 
-## 🚀 Getting Started
+## 🔒 Security Hardening & Threat Model
+We take security seriously with a secure-by-default posture.
+- **Input Sanitization:** Custom regex middleware strictly strips HTML tags from incoming string payloads to prevent XSS. Verified via unit tests.
+- **Helmet Headers:** `helmet` sets strict Content-Security-Policy (CSP) headers, hiding `x-powered-by`, and restricting script/style sources.
+- **Rate Limiting:** `express-rate-limit` prevents DDoS and brute-force API abuse.
+- **Firestore Rules (`firestore.rules`):** We included a default *deny-all* rule (`allow read, write: if false;`). Our backend communicates securely via the Admin SDK / IAM credentials, so the client has absolutely zero direct access to the database.
 
-### Prerequisites
-- Node.js (v18 or higher)
-- A Google Cloud Project with the following APIs enabled:
-  - Vertex AI API
-  - Cloud Translation API
-  - Cloud Natural Language API
-  - Firestore API
-- Google Cloud SDK (`gcloud`) authenticated locally.
+---
 
-### Installation
+## ♿ Accessibility Compliance
+Designed for everyone.
+- **Keyboard Navigation:** All interactive elements (flashcards, chips, buttons) have `tabindex="0"`, `role="button"`, and support `Enter`/`Space` keydown events.
+- **Focus States:** Clearly visible `:focus-visible` rings ensure keyboard users know where they are.
+- **ARIA Labels:** Extensive use of `aria-label`, `aria-live="polite"`, and `role` attributes across dynamic sections (chat, progress bars, modals) to support screen readers.
+- **Contrast & Hierarchy:** Semantic HTML (`<h1>` to `<h3>`) and high-contrast color palettes (in both light and dark modes) ensure readability.
 
-1. **Clone the repository:**
+---
+
+## ⚙️ Environment Variables
+
+| Variable | Description | Required | Example |
+|---|---|---|---|
+| `PORT` | The port the Express server runs on | No | `8080` |
+| `GCP_PROJECT_ID` | Your Google Cloud Project ID | Yes | `my-election-project-123` |
+| `GCP_REGION` | The Google Cloud Region for Vertex AI | No | `us-central1` |
+
+---
+
+## 🚀 Setup & Deployment
+
+### Local Setup
+1. **Clone & Install:**
    ```bash
    git clone https://github.com/himanshu003388/ElectionEdu.git
    cd ElectionEdu
-   ```
-
-2. **Install dependencies:**
-   ```bash
    npm install
    ```
-
-3. **Configure Environment Variables:**
-   Rename `.env.example` to `.env` and update your Project ID:
-   ```env
-   PORT=8080
-   GCP_PROJECT_ID=your-gcp-project-id
-   GCP_REGION=us-central1
-   ```
-
-4. **Run the server:**
+2. **Configure Environment:** Rename `.env.example` to `.env` and fill in `GCP_PROJECT_ID`.
+3. **Authenticate GCP:**
    ```bash
-   npm start
+   gcloud auth application-default login
+   gcloud config set project YOUR_PROJECT_ID
    ```
+4. **Run Server:** `npm start` (Runs on `http://localhost:8080`)
+5. **Run Tests:** `npm test`
 
-5. **Run Tests:**
+### Deployment (Google Cloud Run)
+1. Ensure the `Dockerfile` is present.
+2. Deploy via `gcloud`:
    ```bash
-   npm test
+   gcloud run deploy election-edu \
+     --source . \
+     --region us-central1 \
+     --allow-unauthenticated \
+     --set-env-vars GCP_PROJECT_ID=YOUR_PROJECT_ID
    ```
 
-## 🔒 Security Notes
-The platform utilizes robust security measures including:
-- Helmet.js for Content Security Policy (CSP).
-- IP Rate Limiting to prevent abuse.
-- Custom payload sanitization to strip malicious HTML.
-- Secure fallback "Demo Modes" if cloud credentials fail.
+---
+
+## 🤔 Assumptions Made
+- Users have basic internet connectivity, though the platform degrades gracefully to demo mode if backend APIs are temporarily unavailable.
+- For the evaluation/demo, no external authentication (e.g., OAuth) is required; anonymous `sessionId` tracking via Firestore is sufficient.
+- The `firestore.rules` file is included strictly as an audit artifact; deployment relies purely on Cloud Run IAM execution roles.

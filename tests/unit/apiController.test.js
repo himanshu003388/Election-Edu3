@@ -86,6 +86,19 @@ describe('API Controller Unit Tests', () => {
             expect(gcp.saveChatMessage).toHaveBeenCalledWith('test-session', 'model', 'Mock AI response');
             expect(res.json).toHaveBeenCalledWith({ reply: 'Mock AI response' });
         });
+
+        it('should handle Vertex AI failure gracefully', async () => {
+            req.body.message = 'Hello AI';
+            gcp.generativeModel.startChat.mockReturnValueOnce({
+                sendMessage: jest.fn().mockRejectedValue(new Error('Vertex AI Timeout'))
+            });
+
+            await apiController.handleChat(req, res);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+                reply: expect.stringMatching(/Demo Mode: Google Cloud model unavailable/),
+                demo: true
+            }));
+        });
     });
 
     describe('handleTranslate', () => {
@@ -121,6 +134,17 @@ describe('API Controller Unit Tests', () => {
             expect(gcp.translationClient.translateText).toHaveBeenCalled();
             expect(cache.set).toHaveBeenCalled();
             expect(res.json).toHaveBeenCalledWith({ translatedText: 'Mock Translation' });
+        });
+
+        it('should handle translation API failure gracefully', async () => {
+            req.body = { text: 'Hello', targetLanguage: 'hi' };
+            cache.get.mockReturnValue(null);
+            gcp.translationClient.translateText.mockRejectedValueOnce(new Error('Translation API Error'));
+
+            await apiController.handleTranslate(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith({ error: 'Translation service temporarily unavailable.' });
         });
     });
 
@@ -160,6 +184,17 @@ describe('API Controller Unit Tests', () => {
                 entities: expect.any(Array),
                 sentiment: expect.any(Object)
             }));
+        });
+
+        it('should handle NLP API failure gracefully', async () => {
+            req.body = { text: 'Election 2024' };
+            cache.get.mockReturnValue(null);
+            gcp.nlpClient.analyzeEntities.mockRejectedValueOnce(new Error('NLP Timeout'));
+
+            await apiController.handleAnalyze(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith({ error: 'NLP service temporarily unavailable.' });
         });
     });
 });

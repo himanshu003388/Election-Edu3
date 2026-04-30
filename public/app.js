@@ -174,9 +174,9 @@ async function sendMessage() {
         const data = await response.json();
         
         typingMsg.remove();
-        if (data.response) {
-            const msgObj = addMessage(data.response, 'system');
-            if (data.isDemo) {
+        if (data.reply) {
+            const msgObj = addMessage(data.reply, 'system');
+            if (data.demo) {
                 const badge = document.createElement('span');
                 badge.className = 'demo-badge';
                 badge.textContent = 'Demo Mode';
@@ -335,6 +335,9 @@ function renderFlashcard() {
     
     const div = document.createElement('div');
     div.className = 'flashcard';
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('role', 'button');
+    div.setAttribute('aria-label', `Flashcard: ${card.front}. Press Enter or Space to flip.`);
     div.innerHTML = `
         <div class="flashcard-inner">
             <div class="flashcard-front"><h3>${card.front}</h3></div>
@@ -342,6 +345,12 @@ function renderFlashcard() {
         </div>
     `;
     div.addEventListener('click', () => div.classList.toggle('flipped'));
+    div.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            div.classList.toggle('flipped');
+        }
+    });
     singleFlashcardContainer.appendChild(div);
     
     cardCounter.textContent = `${currentCardIndex + 1}/${electionData.flashcards.length}`;
@@ -717,8 +726,17 @@ function showQuestion() {
     q.options.forEach((opt, idx) => {
         const btn = document.createElement('div');
         btn.className = 'option';
+        btn.setAttribute('tabindex', '0');
+        btn.setAttribute('role', 'button');
+        btn.setAttribute('aria-label', `Option: ${opt}`);
         btn.textContent = opt;
         btn.addEventListener('click', () => handleAnswer(idx, btn));
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleAnswer(idx, btn);
+            }
+        });
         optionsContainer.appendChild(btn);
     });
 }

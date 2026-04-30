@@ -52,6 +52,7 @@ describe('Integration Tests: API Routes', () => {
             expect([200, 500]).toContain(res.statusCode);
             if (res.statusCode === 200) {
                 expect(res.body).toHaveProperty('reply');
+                expect(typeof res.body.reply).toBe('string'); // Schema validation
             }
         }, 15000);
     });
@@ -67,6 +68,7 @@ describe('Integration Tests: API Routes', () => {
             expect([200, 500]).toContain(res.statusCode);
             if (res.statusCode === 200) {
                 expect(res.body).toHaveProperty('translatedText');
+                expect(typeof res.body.translatedText).toBe('string'); // Schema validation
             }
         });
     });
@@ -82,6 +84,7 @@ describe('Integration Tests: API Routes', () => {
             expect([200, 500]).toContain(res.statusCode);
             if (res.statusCode === 200) {
                 expect(res.body).toHaveProperty('entities');
+                expect(Array.isArray(res.body.entities)).toBe(true); // Schema validation
             }
         });
     });

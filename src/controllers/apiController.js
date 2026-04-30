@@ -2,6 +2,11 @@ const config = require('../config/env');
 const cache = require('../services/cacheService');
 const gcp = require('../services/googleCloudService');
 
+/**
+ * Health Check endpoint to verify server and GCP services status.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 exports.getHealth = (req, res) => {
     res.json({
         status: 'ok',
@@ -14,6 +19,12 @@ exports.getHealth = (req, res) => {
     });
 };
 
+/**
+ * Handles chat interactions using Vertex AI Gemini.
+ * Retrieves history, generates response, and saves context to Firestore.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 exports.handleChat = async (req, res) => {
     const { message, sessionId = 'default-session' } = req.body;
 
@@ -74,6 +85,12 @@ exports.handleChat = async (req, res) => {
     }
 };
 
+/**
+ * Translates educational content using Google Cloud Translation API.
+ * Uses caching to optimize identical translation requests.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 exports.handleTranslate = async (req, res) => {
     const { text, targetLanguage } = req.body;
 
@@ -114,6 +131,12 @@ exports.handleTranslate = async (req, res) => {
     }
 };
 
+/**
+ * Analyzes text for entities and sentiment using Google Cloud Natural Language API.
+ * Caches results to prevent redundant API calls.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 exports.handleAnalyze = async (req, res) => {
     const { text } = req.body;
 

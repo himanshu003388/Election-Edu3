@@ -1,7 +1,10 @@
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
-// Content Security Policy
+/**
+ * Content Security Policy middleware using Helmet.
+ * Defines allowed sources for scripts, styles, fonts, and images.
+ */
 const helmetMiddleware = helmet({
     contentSecurityPolicy: {
         directives: {
@@ -16,7 +19,10 @@ const helmetMiddleware = helmet({
     }
 });
 
-// API Rate Limiting
+/**
+ * API Rate Limiting middleware.
+ * Restricts each IP to 100 requests per 15-minute window.
+ */
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100, // Limit each IP to 100 requests per windowMs
@@ -25,7 +31,15 @@ const apiLimiter = rateLimit({
     message: { error: 'Too many requests, please try again later.' }
 });
 
-// Input Sanitization (Basic protection)
+/**
+ * Input Sanitization middleware.
+ * Provides basic XSS protection by stripping HTML tags from string payloads.
+ * Only targets string properties on the request body.
+ * 
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 const sanitizeInput = (req, res, next) => {
     // A simple regex to strip out potentially dangerous HTML tags
     const stripHtml = (str) => {
@@ -43,7 +57,15 @@ const sanitizeInput = (req, res, next) => {
     next();
 };
 
-// Global Error Handler
+/**
+ * Global Error Handler.
+ * Catches unhandled exceptions and returns a generic 500 response.
+ * 
+ * @param {Error} err - The error object
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 const errorHandler = (err, req, res, next) => {
     console.error('Unhandled error:', err.message); // Log internal message, do not expose to user
     res.status(500).json({ error: 'Internal server error.' });

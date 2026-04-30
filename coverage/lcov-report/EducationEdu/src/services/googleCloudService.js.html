@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.94% </span>
+                <span class="strong">84.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>30/38</span>
+                <span class='fraction'>32/38</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/36</span>
+                <span class='fraction'>32/36</span>
             </div>
         
             
@@ -156,7 +156,17 @@
 <a name='L91'></a><a href='#L91'>91</a>
 <a name='L92'></a><a href='#L92'>92</a>
 <a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -195,27 +205,37 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -235,8 +255,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -286,7 +306,13 @@ try {
 <span class="cstat-no" title="statement not covered" >    console.warn(err.message);</span>
 }
 &nbsp;
-// Save chat to Firestore
+/**
+ * Saves a chat message to Firestore under a specific session.
+ * @param {string} sessionId - The unique session identifier
+ * @param {string} role - The role of the sender ('user' or 'model')
+ * @param {string} text - The message content
+ * @returns {Promise&lt;void&gt;}
+ */
 async function saveChatMessage(sessionId, role, text) {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!googleServicesReady) <span class="cstat-no" title="statement not covered" >return;</span>
     try {
@@ -298,13 +324,17 @@ async function saveChatMessage(sessionId, role, text) {
         });
         
         // Also update the session document to keep track of activity
-        await sessionRef.set({ lastActive: Firestore.FieldValue.serverTimestamp() }, { merge: true });
+<span class="cstat-no" title="statement not covered" >        await sessionRef.set({ lastActive: Firestore.FieldValue.serverTimestamp() }, { merge: true });</span>
     } catch (err) {
-<span class="cstat-no" title="statement not covered" >        console.error('Firestore save error:', err.message);</span>
+        console.error('Firestore save error:', err.message);
     }
 }
 &nbsp;
-// Retrieve chat history for context
+/**
+ * Retrieves the last 10 messages of a chat session from Firestore for context.
+ * @param {string} sessionId - The unique session identifier
+ * @returns {Promise&lt;Array&lt;{role: string, parts: Array&lt;{text: string}&gt;}&gt;&gt;} Chat history formatted for Vertex AI
+ */
 async function getChatHistory(sessionId) {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!googleServicesReady) <span class="cstat-no" title="statement not covered" >return [];</span>
     try {
@@ -328,8 +358,8 @@ async function getChatHistory(sessionId) {
         });
         return history;
     } catch (err) {
-<span class="cstat-no" title="statement not covered" >        console.error('Firestore fetch error:', err.message);</span>
-<span class="cstat-no" title="statement not covered" >        return [];</span>
+        console.error('Firestore fetch error:', err.message);
+        return [];
     }
 }
 &nbsp;
@@ -349,7 +379,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-30T11:32:37.545Z
+                at 2026-04-30T20:06:22.901Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
