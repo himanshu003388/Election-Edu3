@@ -7,7 +7,7 @@
 
 ElectionEdu is a comprehensive, AI-powered civic education platform designed to help Indian citizens understand the electoral process.
 
-![ElectionEdu Banner](https://via.placeholder.com/1200x300.png?text=ElectionEdu+-+Empowering+Voters)
+![ElectionEdu Banner](assets/banner.png)
 
 ---
 
