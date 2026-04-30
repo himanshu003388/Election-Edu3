@@ -21,6 +21,14 @@ ElectionEdu is a state-of-the-art interactive learning portal created to demysti
 
 By combining Google Cloud's AI infrastructure (Vertex AI, Translation, NLP) with a highly accessible, responsive frontend interface, ElectionEdu empowers first-time voters and youth to confidently participate in the world's largest democracy.
 
+## 🚀 What Makes ElectionEdu Unique?
+
+- AI assistant restricted to Indian election/civic topics using a strict system prompt
+- Firestore-based session memory for contextual chat support
+- Offline "Instant Guide" fallback for common election questions
+- Secure-by-default design with sanitization, Helmet CSP, and rate limiting
+- Fully accessible UI with keyboard navigation and ARIA compliance
+
 ### User Journey Flow
 
 ```mermaid
