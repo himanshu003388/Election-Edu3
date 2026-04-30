@@ -6,6 +6,36 @@ ElectionEdu is a comprehensive, AI-powered civic education platform designed to 
 
 ---
 
+## 📖 Project Description
+
+ElectionEdu is a state-of-the-art interactive learning portal created to demystify the Indian democratic process. The platform provides a dynamic "Dashboard" featuring an AI Assistant powered by Google Vertex AI, enabling users to ask any election-related question and receive accurate, instant guidance. Alongside the AI, ElectionEdu offers multiple interactive learning modules:
+- **Election Roadmap:** A visual 12-step timeline from voter registration to counting day.
+- **My Voting Plan:** A persistent checklist for citizens to track their readiness before heading to the polls.
+- **Quick Facts & Flashcards:** Bite-sized interactive cards to test basic civic knowledge.
+- **Knowledge Quiz:** A gamified module that tests understanding and encourages active citizenship.
+
+By combining Google Cloud's AI infrastructure (Vertex AI, Translation, NLP) with a highly accessible, responsive frontend interface, ElectionEdu empowers first-time voters and youth to confidently participate in the world's largest democracy.
+
+### User Journey Flow
+
+```mermaid
+journey
+    title A Citizen's Journey on ElectionEdu
+    section Discovery
+      Land on Dashboard: 5: User
+      View Democracy Facts: 4: User
+    section Interactive Learning
+      Ask AI Assistant questions: 5: User
+      Read Election Roadmap: 4: User
+      Review Flashcards: 4: User
+    section Preparation & Action
+      Check required Forms & Docs: 5: User
+      Complete Voting Plan Checklist: 5: User
+      Take Knowledge Quiz: 4: User
+```
+
+---
+
 ## 🎯 Challenge Vertical & Persona
 - **Challenge Vertical:** Civic Education & Democratic Participation
 - **Target Persona:** First-Time Voters, Youth, and Citizens seeking clarity on the complex Indian electoral process.
