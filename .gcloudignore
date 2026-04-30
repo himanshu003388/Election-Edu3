@@ -1,7 +1,7 @@
-node_modules
-.env
 .git
 .gitignore
-implementation_plan.md
-task.md
-walkthrough.md
+node_modules/
+tests/
+.env
+.gemini/
+.agents/

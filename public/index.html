@@ -29,7 +29,7 @@
     <!-- Skip Navigation Link (Accessibility) -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="container">
+    <div class="app-container">
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar" role="complementary">
@@ -61,6 +61,16 @@
                         </svg>
                     </span>
                     <span>Roadmap</span>
+                </a>
+                <a href="#" id="nav-timeline" class="nav-item" aria-label="Go to Election Timeline">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </span>
+                    <span>Timeline</span>
                 </a>
                 <a href="#" id="nav-checklist" class="nav-item" aria-label="Go to Checklist">
                     <span class="nav-icon">
@@ -155,8 +165,10 @@
                 </header>
 
                 <div class="dashboard-grid">
-                    <!-- AI Assistant Section -->
-                    <div class="glass-card chat-card">
+                    <!-- Left Column -->
+                    <div class="dashboard-left-col">
+                        <!-- AI Assistant Section -->
+                        <div class="glass-card chat-card">
                         <div class="card-header">
                             <div class="header-title">
                                 <span class="header-icon">🤖</span>
@@ -174,8 +186,15 @@
                         <div id="chat-messages" class="chat-messages" role="log" aria-live="polite"
                             aria-label="Chat messages">
                             <div class="message system">
-                                Namaste! I'm your Election Assistant. Ask me anything about the Indian electoral system,
-                                and I'll explain it simply.
+                                <h3 class="font-bold mb-2">Welcome, Citizen! 🇮🇳</h3>
+                                <p class="mb-4">I'm your Election Assistant. I can help you understand:</p>
+                                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+                                    <li>🔹 How to register as a voter</li>
+                                    <li>🔹 How EVMs and VVPATs work</li>
+                                    <li>🔹 What documents you need for polling day</li>
+                                    <li>🔹 The 12-step Roadmap to elections</li>
+                                </ul>
+                                <p class="mt-4">How can I help you today?</p>
                             </div>
                         </div>
                         <div class="chat-suggestions" id="chat-suggestions" role="group"
@@ -201,13 +220,15 @@
                         </div>
                     </div>
 
-                    <div class="dashboard-right-col">
+                </div> <!-- End Left Column -->
+
+                <div class="dashboard-right-col">
                         <!-- Flashcards Section -->
                         <div class="glass-card flashcard-card">
                             <div class="card-header">
                                 <div class="header-title">
                                     <span class="header-icon">⚡</span>
-                                    <h2>Quick Facts</h2>
+                                    <h2>Quick <span class="text-gradient">Facts</span></h2>
                                 </div>
                                 <button id="tts-flashcard-btn" class="icon-btn"
                                     aria-label="Read flashcard content aloud" title="Read Flashcard">
@@ -261,6 +282,28 @@
                     </div>
                 </div>
 
+                <!-- Democracy Stats & Facts Widget -->
+                <div class="glass-card fact-widget mt-8">
+                    <div class="card-header">
+                        <div class="header-title">
+                            <span class="header-icon">💡</span>
+                            <h2>Democracy Facts</h2>
+                        </div>
+                        <button id="shuffle-fact-btn" class="icon-btn" aria-label="Show another fact" title="Shuffle Fact">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 3 21 3 21 8"></polyline>
+                                <line x1="4" y1="20" x2="21" y2="3"></line>
+                                <polyline points="21 16 21 21 16 21"></polyline>
+                                <line x1="15" y1="15" x2="21" y2="21"></line>
+                                <line x1="4" y1="4" x2="9" y2="9"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; min-height: 120px;">
+                        <p id="fact-text" class="text-center" style="font-weight: 500; font-size: 1.1rem; line-height: 1.6; transition: opacity 0.5s ease; margin: 0; color: var(--text-primary);">Loading fact...</p>
+                    </div>
+                </div>
+
                 <!-- Quiz CTA Banner -->
                 <div class="glass-card quiz-cta-card mt-8">
                     <div class="cta-content">
@@ -288,6 +331,24 @@
                     <p class="page-subtitle">The 12 steps of the world's largest democratic exercise.</p>
                 </header>
                 <div class="timeline-container" id="roadmap-container" role="list">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- Election Timeline View (New) -->
+            <section id="view-timeline" class="view-section hidden" aria-label="Election Database Timeline">
+                <header class="page-header text-center">
+                    <h1 class="page-title">Election <span class="text-gradient">Timeline</span></h1>
+                    <p class="page-subtitle">Select a past election to see key dates and detailed information.</p>
+                </header>
+                
+                <div class="election-selector max-w-2xl mx-auto mb-10 flex justify-center gap-4 flex-wrap">
+                    <button class="year-chip active" data-year="2024">2024</button>
+                    <button class="year-chip" data-year="2019">2019</button>
+                    <button class="year-chip" data-year="2014">2014</button>
+                </div>
+
+                <div id="election-details" class="max-w-5xl mx-auto">
                     <!-- Injected by JS -->
                 </div>
             </section>
@@ -330,6 +391,16 @@
                 </div>
                 <div id="glossary-container" class="glossary-grid max-w-4xl mx-auto" role="list">
                     <!-- Injected by JS -->
+                </div>
+
+                <div class="mt-16 pt-10 border-t border-glass">
+                    <header class="page-header text-center mb-10">
+                        <h2 class="text-2xl font-bold">Historical <span class="text-gradient">Milestones</span></h2>
+                        <p class="text-secondary">Key moments in the evolution of Indian democracy.</p>
+                    </header>
+                    <div class="timeline-container" id="history-container" role="list">
+                        <!-- Injected by JS -->
+                    </div>
                 </div>
             </section>
 

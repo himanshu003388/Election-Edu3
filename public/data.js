@@ -153,3 +153,112 @@ export const beginnerSteps = [
         content: "After voting completes nationwide, EVMs are secured. On counting day, votes are tallied and the candidate with the highest votes in a constituency wins."
     }
 ];
+
+export const electionFacts = [
+    "The 2019 Lok Sabha elections were the world's largest democratic exercise, with over 912 million eligible voters.",
+    "The highest polling station in the world is located in Tashigang, Himachal Pradesh, at an altitude of 15,256 feet.",
+    "A single voter in the Gir forest of Gujarat has a dedicated polling booth set up just for him, deep inside the sanctuary.",
+    "India introduced the 'None of the Above' (NOTA) option in 2013, allowing voters to officially register their rejection of all candidates.",
+    "Indelible ink, applied to a voter's left index finger, is manufactured exclusively by Mysore Paints and Varnish Limited.",
+    "The first general election of independent India took four months to complete, spanning from late 1951 to early 1952.",
+    "VVPAT (Voter Verifiable Paper Audit Trail) machines were introduced to provide a physical paper slip confirming the electronic vote."
+];
+
+export const historyTimelineData = [
+    {
+        year: "1950",
+        title: "Election Commission Established",
+        description: "The Election Commission of India (ECI) was established on January 25, 1950, a day now celebrated as National Voters' Day.",
+        icon: "🏛️"
+    },
+    {
+        year: "1951-52",
+        title: "First General Elections",
+        description: "India held its first massive democratic elections with universal adult franchise. Sukumar Sen was the first Chief Election Commissioner.",
+        icon: "🗳️"
+    },
+    {
+        year: "1982",
+        title: "First EVM Usage",
+        description: "Electronic Voting Machines (EVMs) were used for the first time on a trial basis in the Parur Assembly constituency of Kerala.",
+        icon: "📠"
+    },
+    {
+        year: "1989",
+        title: "Voting Age Lowered",
+        description: "The 61st Amendment Act lowered the voting age in India from 21 to 18 years, enfranchising millions of youth.",
+        icon: "🎓"
+    },
+    {
+        year: "1993",
+        title: "EPIC Introduced",
+        description: "Elector's Photo Identity Cards (EPIC), commonly known as Voter IDs, were introduced to prevent electoral fraud.",
+        icon: "🪪"
+    },
+    {
+        year: "2013",
+        title: "NOTA Implemented",
+        description: "The Supreme Court directed the ECI to provide the 'None of the Above' (NOTA) option on EVMs.",
+        icon: "🚫"
+    },
+    {
+        year: "2014",
+        title: "VVPAT Introduction",
+        description: "Voter Verifiable Paper Audit Trail (VVPAT) was introduced with EVMs to add an extra layer of transparency.",
+        icon: "🖨️"
+    },
+    {
+        year: "2019",
+        title: "Largest Election in History",
+        description: "The 17th Lok Sabha elections recorded the highest ever voter turnout at 67.4% out of 912 million eligible voters.",
+        icon: "📈"
+    }
+];
+
+export const pastElectionsData = {
+    "2024": {
+        title: "18th Lok Sabha General Election",
+        dates: [
+            { label: "Announcement", date: "March 16, 2024" },
+            { label: "Phase 1 Polling", date: "April 19, 2024" },
+            { label: "Phase 7 Polling", date: "June 1, 2024" },
+            { label: "Counting Day", date: "June 4, 2024" }
+        ],
+        stats: [
+            { label: "Eligible Voters", value: "~968 Million" },
+            { label: "Total Phases", value: "7" },
+            { label: "Voter Turnout", value: "65.79%" }
+        ],
+        highlights: "The world's largest election with nearly a billion eligible voters. The Election Commission set up over 1 million polling stations."
+    },
+    "2019": {
+        title: "17th Lok Sabha General Election",
+        dates: [
+            { label: "Announcement", date: "March 10, 2019" },
+            { label: "Phase 1 Polling", date: "April 11, 2019" },
+            { label: "Phase 7 Polling", date: "May 19, 2019" },
+            { label: "Counting Day", date: "May 23, 2019" }
+        ],
+        stats: [
+            { label: "Eligible Voters", value: "912 Million" },
+            { label: "Total Phases", value: "7" },
+            { label: "Voter Turnout", value: "67.4%" }
+        ],
+        highlights: "Recorded the highest voter turnout in the history of Indian general elections. VVPATs were used in all EVMs."
+    },
+    "2014": {
+        title: "16th Lok Sabha General Election",
+        dates: [
+            { label: "Announcement", date: "March 5, 2014" },
+            { label: "Phase 1 Polling", date: "April 7, 2014" },
+            { label: "Phase 9 Polling", date: "May 12, 2014" },
+            { label: "Counting Day", date: "May 16, 2014" }
+        ],
+        stats: [
+            { label: "Eligible Voters", value: "814.5 Million" },
+            { label: "Total Phases", value: "9" },
+            { label: "Voter Turnout", value: "66.4%" }
+        ],
+        highlights: "Introduction of the NOTA (None Of The Above) option on EVMs for a general election, giving voters the right to reject candidates."
+    }
+};

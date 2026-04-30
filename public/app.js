@@ -1,4 +1,8 @@
-import { roadmapData, checklistData, glossaryData, formsData, beginnerSteps } from './data.js';
+import { roadmapData, checklistData, glossaryData, formsData, beginnerSteps, electionFacts, historyTimelineData, pastElectionsData } from './data.js';
+
+// --- Session ID Generation ---
+window.chatSessionId = localStorage.getItem('chatSessionId') || crypto.randomUUID();
+localStorage.setItem('chatSessionId', window.chatSessionId);
 
 // Data for Flashcards and Quiz
 const electionData = {
@@ -71,14 +75,31 @@ window.askAI = function(question) {
     
     // Fill the input
     const input = document.getElementById('user-input');
-    input.value = question;
+    if (input) {
+        input.value = question;
+    }
     
     // Smooth scroll to chat
-    document.querySelector('.chat-card').scrollIntoView({ behavior: 'smooth' });
+    const chatCard = document.querySelector('.chat-card');
+    if (chatCard) {
+        chatCard.scrollIntoView({ behavior: 'smooth' });
+    }
     
     // Trigger send
-    document.getElementById('send-btn').click();
+    const sendBtn = document.getElementById('send-btn');
+    if (sendBtn) {
+        sendBtn.click();
+    }
 };
+
+// Global Event Delegation for ask-ai-btn
+document.addEventListener('click', (e) => {
+    const askBtn = e.target.closest('.ask-ai-btn');
+    if (askBtn && askBtn.hasAttribute('data-question')) {
+        const question = askBtn.getAttribute('data-question');
+        window.askAI(question);
+    }
+});
 
 // --- AI Chat Logic ---
 const chatMessages = document.getElementById('chat-messages');
@@ -148,7 +169,7 @@ async function sendMessage() {
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
+            body: JSON.stringify({ message: text, sessionId: window.chatSessionId })
         });
         const data = await response.json();
         
@@ -241,6 +262,7 @@ document.getElementById('tts-flashcard-btn').addEventListener('click', () => {
 const views = {
     home: document.getElementById('view-home'),
     roadmap: document.getElementById('view-roadmap'),
+    timeline: document.getElementById('view-timeline'),
     checklist: document.getElementById('view-checklist'),
     glossary: document.getElementById('view-glossary'),
     forms: document.getElementById('view-forms'),
@@ -251,6 +273,7 @@ const views = {
 const navLinks = {
     home: document.getElementById('nav-home'),
     roadmap: document.getElementById('nav-roadmap'),
+    timeline: document.getElementById('nav-timeline'),
     checklist: document.getElementById('nav-checklist'),
     glossary: document.getElementById('nav-glossary'),
     forms: document.getElementById('nav-forms'),
@@ -347,7 +370,7 @@ function renderRoadmap() {
                 <div class="timeline-content glass-card ${isHighlight ? 'highlight-card' : ''}">
                     <h3>${step.id}. ${step.title}</h3>
                     <p>${step.description}</p>
-                    <button class="outline-btn ask-ai-btn" onclick="askAI('Tell me more about ${step.title} in Indian elections.')" aria-label="Ask AI about ${step.title}">
+                    <button class="outline-btn ask-ai-btn" data-question="Tell me more about ${step.title} in Indian elections." aria-label="Ask AI about ${step.title}">
                         Ask Election Edu 🤖
                     </button>
                 </div>
@@ -355,6 +378,128 @@ function renderRoadmap() {
         `;
         container.insertAdjacentHTML('beforeend', html);
     });
+}
+// --- Historical Timeline Rendering ---
+function renderHistoryTimeline() {
+    const container = document.getElementById('history-container');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    historyTimelineData.forEach((step, index) => {
+        const isHighlight = index === historyTimelineData.length - 1;
+        const html = `
+            <div class="timeline-item" data-step="${index + 1}">
+                <div class="timeline-marker ${isHighlight ? 'highlight-marker' : ''}">${step.icon}</div>
+                <div class="timeline-content glass-card ${isHighlight ? 'highlight-card' : ''}">
+                    <h3 class="text-primary mb-1">${step.year}</h3>
+                    <h4 class="mb-2" style="font-size: 1.1rem;">${step.title}</h4>
+                    <p>${step.description}</p>
+                    <button class="outline-btn ask-ai-btn mt-3" data-question="Tell me more about what happened in Indian elections in ${step.year}." aria-label="Ask AI about ${step.year}">
+                        Ask Election Edu 🤖
+                    </button>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    });
+}
+
+// --- Election Timeline Logic (New) ---
+function renderElectionDetails(year) {
+    const container = document.getElementById('election-details');
+    if (!container) return;
+    
+    const data = pastElectionsData[year];
+    if (!data) return;
+
+    let datesHtml = '';
+    data.dates.forEach(item => {
+        datesHtml += `
+            <div class="glass-card p-4 text-center date-card">
+                <p class="text-secondary text-xs uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">${item.label}</p>
+                <p class="font-bold text-lg" style="margin:0;">${item.date}</p>
+            </div>
+        `;
+    });
+
+    let statsHtml = '';
+    data.stats.forEach(stat => {
+        statsHtml += `
+            <div class="stat-box mb-6">
+                <p class="text-secondary text-sm mb-1">${stat.label}</p>
+                <p class="text-3xl font-bold text-gradient" style="margin:0;">${stat.value}</p>
+            </div>
+        `;
+    });
+
+    container.innerHTML = `
+        <div class="glass-card p-8 mb-8 election-info-card">
+            <h2 class="text-2xl font-bold mb-8 text-center" style="font-size: 1.8rem;">${data.title}</h2>
+            
+            <div class="dates-grid mb-10">
+                ${datesHtml}
+            </div>
+            
+            <div class="details-split pt-8 border-t border-glass">
+                <div class="stats-col">
+                    ${statsHtml}
+                </div>
+                <div class="content-col">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--primary);">Election Highlights</h3>
+                    <p class="text-lg leading-relaxed mb-8" style="font-size: 1.1rem; line-height: 1.6;">${data.highlights}</p>
+                    <button class="primary-btn ask-ai-btn w-full" data-question="Tell me more about the ${data.title} including major events and results." style="padding: 1rem;">
+                        Ask AI about this Election 🤖
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Global click delegation for year-chips
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('year-chip')) {
+        document.querySelectorAll('.year-chip').forEach(chip => chip.classList.remove('active'));
+        e.target.classList.add('active');
+        const year = e.target.dataset.year;
+        renderElectionDetails(year);
+    }
+});
+
+// --- Democracy Facts Widget Logic ---
+function initFactsWidget() {
+    const factText = document.getElementById('fact-text');
+    const shuffleBtn = document.getElementById('shuffle-fact-btn');
+    if (!factText) return;
+
+    let currentFactIndex = 0;
+    
+    // Shuffle the array initially
+    const shuffledFacts = [...electionFacts].sort(() => Math.random() - 0.5);
+
+    const showFact = () => {
+        factText.style.opacity = 0;
+        setTimeout(() => {
+            factText.textContent = shuffledFacts[currentFactIndex];
+            factText.style.opacity = 1;
+            currentFactIndex = (currentFactIndex + 1) % shuffledFacts.length;
+        }, 500);
+    };
+
+    // Show first fact immediately
+    showFact();
+
+    // Auto rotate every 8 seconds
+    let factInterval = setInterval(showFact, 8000);
+
+    // Shuffle button
+    if (shuffleBtn) {
+        shuffleBtn.addEventListener('click', () => {
+            clearInterval(factInterval); // Reset timer
+            showFact();
+            factInterval = setInterval(showFact, 8000);
+        });
+    }
 }
 
 // --- Checklist Logic ---
@@ -443,7 +588,7 @@ function renderGlossary(filterText = '') {
             <div class="glossary-card glass-card">
                 <h3>${item.term}</h3>
                 <p>${item.definition}</p>
-                <button class="outline-btn ask-ai-btn" onclick="askAI('Explain ${item.term} in simple terms.')" aria-label="Ask AI about ${item.term}">
+                <button class="outline-btn ask-ai-btn" data-question="Explain ${item.term} in simple terms." aria-label="Ask AI about ${item.term}">
                     Ask AI 🤖
                 </button>
             </div>
@@ -452,8 +597,12 @@ function renderGlossary(filterText = '') {
     });
 }
 
+let glossaryTimeout = null;
 document.getElementById('glossary-search').addEventListener('input', (e) => {
-    renderGlossary(e.target.value);
+    if (glossaryTimeout) clearTimeout(glossaryTimeout);
+    glossaryTimeout = setTimeout(() => {
+        renderGlossary(e.target.value);
+    }, 300);
 });
 
 // --- Forms Logic ---
@@ -471,7 +620,7 @@ function renderForms() {
                 <p><strong>Purpose:</strong> ${form.purpose}</p>
                 <p><strong>For:</strong> ${form.who}</p>
                 <p><strong>Proof needed:</strong> ${form.proof}</p>
-                <button class="outline-btn ask-ai-btn" onclick="askAI('How do I fill out ${form.title} for voter registration?')" aria-label="Ask AI about ${form.title}">
+                <button class="outline-btn ask-ai-btn" data-question="How do I fill out ${form.title} for voter registration?" aria-label="Ask AI about ${form.title}">
                     Ask Election Edu 🤖
                 </button>
             </div>
@@ -613,13 +762,87 @@ function showResult() {
     }
 }
 
+// --- Translation & Analysis Tools Logic ---
+const translateBtn = document.getElementById('translate-btn');
+const analyzeBtn = document.getElementById('analyze-btn');
+const toolText = document.getElementById('tool-text');
+const toolLang = document.getElementById('tool-lang');
+const toolResult = document.getElementById('tool-result');
+
+if (translateBtn) {
+    translateBtn.addEventListener('click', async () => {
+        const text = toolText.value.trim();
+        if (!text) return;
+        
+        toolResult.classList.remove('hidden');
+        toolResult.innerHTML = '<span class="text-secondary">Translating...</span>';
+        
+        try {
+            const response = await fetch('/api/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, targetLanguage: toolLang.value })
+            });
+            const data = await response.json();
+            
+            if (data.translatedText) {
+                toolResult.innerHTML = `<strong>Translated:</strong> <p class="mt-2">${data.translatedText}</p>`;
+            } else {
+                toolResult.innerHTML = `<span class="text-danger">Error: ${data.error || 'Failed to translate'}</span>`;
+            }
+        } catch (err) {
+            toolResult.innerHTML = '<span class="text-danger">Error connecting to server.</span>';
+        }
+    });
+}
+
+if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', async () => {
+        const text = toolText.value.trim();
+        if (!text) return;
+        
+        toolResult.classList.remove('hidden');
+        toolResult.innerHTML = '<span class="text-secondary">Analyzing...</span>';
+        
+        try {
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const data = await response.json();
+            
+            if (data.entities || data.sentiment) {
+                let html = '<strong>Analysis Results:</strong><ul class="mt-2 text-sm" style="list-style: inside;">';
+                if (data.sentiment) {
+                    const mood = data.sentiment.score > 0.1 ? 'Positive 🟢' : (data.sentiment.score < -0.1 ? 'Negative 🔴' : 'Neutral ⚪');
+                    html += `<li>Sentiment: ${mood} (Score: ${data.sentiment.score})</li>`;
+                }
+                if (data.entities && data.entities.length > 0) {
+                    html += `<li>Key Entities: ${data.entities.slice(0,3).map(e => e.name).join(', ')}</li>`;
+                }
+                html += '</ul>';
+                if (data.demo) html += '<p class="mt-2 text-sm text-secondary"><em>(Demo mode)</em></p>';
+                toolResult.innerHTML = html;
+            } else {
+                toolResult.innerHTML = `<span class="text-danger">Error: ${data.error || 'Failed to analyze'}</span>`;
+            }
+        } catch (err) {
+            toolResult.innerHTML = '<span class="text-danger">Error connecting to server.</span>';
+        }
+    });
+}
+
 // --- Initialize App ---
 function init() {
     renderFlashcard();
     renderRoadmap();
+    renderHistoryTimeline();
+    renderElectionDetails('2024'); // Initial load for timeline view
     renderChecklist();
     renderGlossary();
     renderForms();
+    initFactsWidget();
 }
 
 init();
