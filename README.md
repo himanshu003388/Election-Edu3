@@ -26,32 +26,32 @@ The application is built using a modern **Service-Controller-Router** backend ar
 
 ```mermaid
 graph TD
-    Client[📱 Client / Browser (Vanilla JS)]
+    Client["📱 Client / Browser (Vanilla JS)"]
     
     subgraph Express Backend
-        Router[🛣️ API Routes]
-        Controller[⚙️ API Controller]
-        Cache[(⚡ Node Cache)]
+        Router["🛣️ API Routes"]
+        Controller["⚙️ API Controller"]
+        Cache[("⚡ Node Cache")]
         
-        Router -->|Rate Limited & Sanitized| Controller
-        Controller <-->|Check/Set Cache| Cache
+        Router -->|"Rate Limited & Sanitized"| Controller
+        Controller <-->|"Check/Set Cache"| Cache
     end
     
     subgraph Google Cloud Platform
-        VertexAI[🧠 Vertex AI Gemini]
-        Translate[🌐 Translation API]
-        NLP[📝 Natural Language API]
-        Firestore[(📂 Firestore Database)]
+        VertexAI["🧠 Vertex AI Gemini"]
+        Translate["🌐 Translation API"]
+        NLP["📝 Natural Language API"]
+        Firestore[("📂 Firestore Database")]
     end
     
-    Client <-->|HTTP POST /api/chat| Router
-    Client <-->|HTTP POST /api/translate| Router
-    Client <-->|HTTP POST /api/analyze| Router
+    Client <-->|"HTTP POST /api/chat"| Router
+    Client <-->|"HTTP POST /api/translate"| Router
+    Client <-->|"HTTP POST /api/analyze"| Router
     
-    Controller <-->|Fetch/Save Context| Firestore
-    Controller <-->|Generate Answer| VertexAI
-    Controller <-->|Translate Text| Translate
-    Controller <-->|Entity/Sentiment Analysis| NLP
+    Controller <-->|"Fetch/Save Context"| Firestore
+    Controller <-->|"Generate Answer"| VertexAI
+    Controller <-->|"Translate Text"| Translate
+    Controller <-->|"Entity/Sentiment Analysis"| NLP
 ```
 
 ### Flow of the AI Chat Module:
